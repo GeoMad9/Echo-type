@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UK Voice Writer</title>
+    <style>
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            padding: 15px; 
+            background: #121212; 
+            color: #e0e0e0;
+        }
+        textarea { 
+            width: 100%; 
+            height: 300px; 
+            padding: 15px; 
+            font-size: 20px; 
+            border-radius: 12px; 
+            border: 2px solid #333;
+            background: #1e1e1e;
+            color: white;
+            box-sizing: border-box;
+            outline: none;
+        }
+        textarea:focus { border-color: #007bff; }
+        .info { margin-top: 10px; font-size: 12px; opacity: 0.6; }
+    </style>
+</head>
+<body>
+
+    <h3>Android UK Voice Reader</h3>
+    <textarea id="editor" placeholder="Type here..."></textarea>
+    <div class="info" id="status">Waiting for input...</div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const status = document.getElementById('status');
+        const synth = window.speechSynthesis;
+        let ukVoice = null;
+
+        // Force Android to fetch voices
+        function setVoice() {
+            const voices = synth.getVoices();
+            // Specifically look for Google UK English Female or standard en-GB
+            ukVoice = voices.find(v => v.lang === 'en-GB' && v.name.includes('Female')) || 
+                      voices.find(v => v.lang === 'en-GB');
+            
+            if (ukVoice) {
+                status.innerText = "Voice Active: " + ukVoice.name;
+            }
+        }
+
+        // Android needs this event to populate the voice list
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = setVoice;
+        }
+
+        editor.addEventListener('input', (e) => {
+            const val = e.target.value;
+            const lastChar = val.charAt(val.length - 1);
+
+            // Trigger Word: Space or Comma
+            if (lastChar === " " || lastChar === ",") {
+                const words = val.trim().split(/\s+/);
+                const lastWord = words[words.length - 1].replace(/[^a-zA-Z]/g, "");
+                if (lastWord.length > 0) {
+                    speakText(lastWord);
+                }
+            }
+
+            // Trigger Sentence: . ! ?
+            if (/[.!?]/.test(lastChar)) {
+                const sentences = val.match(/[^.!?]+[.!?]+/g);
+                if (sentences) {
+                    speakText(sentences[sentences.length - 1]);
+                }
+            }
+        });
+
+        function speakText(text) {
+            // Cancel previous speech to prevent overlapping on fast typing
+            synth.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            if (ukVoice) {
+                utterance.voice = ukVoice;
+            }
+            
+            utterance.lang = 'en-GB';
+            utterance.pitch = 1.3; // Higher pitch for "young" effect
+            utterance.rate = 1.0;  // Natural speed
+
+            synth.speak(utterance);
+        }
+
+        // Initialize voice selection
+        setVoice();
+    </script>
+</body>
+</html>
