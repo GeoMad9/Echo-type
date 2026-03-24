@@ -1,19 +1,14 @@
-This is a fantastic addition! By adding a Visual Communication Board (often called an AAC board) at the bottom, your app becomes a powerful hybrid of a text-to-speech editor and a visual aid.
-
-I have added a scrollable "Category Banner" below the text area. Since we are using a single file, I’ve used high-quality Emojis for the icons. Emojis are perfect for mobile because they load instantly, look great on Android, and don't require you to manage separate image files.
-
-Updated Mobile App with Visual Category Banner
-HTML
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>UK Voice Writer & Board</title>
+    <title>UK Voice Writer</title>
+    <link rel="icon" type="image/png" href="icon.png">
     <style>
         body { 
             font-family: 'Roboto', sans-serif; 
-            padding: 15px; 
+            padding: 10px; 
             background: #121212; 
             color: #e0e0e0;
             margin: 0;
@@ -21,70 +16,58 @@ HTML
             flex-direction: column;
             height: 100vh;
         }
-        .controls { display: flex; gap: 10px; margin-bottom: 10px; }
-        select { flex-grow: 1; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #444; }
-        .btn-clear { padding: 10px; border-radius: 8px; background: #cc0000; color: white; border: none; font-weight: bold; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .btn-clear { padding: 8px 15px; border-radius: 8px; background: #cc0000; color: white; border: none; font-weight: bold; }
         
         textarea { 
             width: 100%; 
-            flex-grow: 1; /* Takes up available space */
+            flex-grow: 1;
             padding: 15px; 
-            font-size: 20px; 
+            font-size: 22px; 
             border-radius: 12px; 
             border: 2px solid #333;
             background: #1e1e1e;
             color: white;
             box-sizing: border-box;
             outline: none;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
-        /* Category Banner Styling */
         .banner-container {
             background: #1e1e1e;
-            padding: 10px;
+            padding: 10px 0;
             border-top: 2px solid #333;
-            overflow-x: auto; /* Allows side-scrolling */
+            overflow-x: auto;
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
         }
-        .category-group {
-            display: inline-block;
-            margin-right: 20px;
-            text-align: center;
-        }
-        .category-label {
-            display: block;
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #007bff;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+        .category-group { display: inline-block; margin: 0 10px; vertical-align: top; }
+        .category-label { display: block; font-size: 11px; text-transform: uppercase; color: #007bff; margin-bottom: 8px; font-weight: bold; text-align: center; }
+        
         .icon-btn {
             display: inline-flex;
             flex-direction: column;
             align-items: center;
             background: #2a2a2a;
             border: 1px solid #444;
-            border-radius: 8px;
-            padding: 10px;
-            margin-right: 5px;
-            cursor: pointer;
+            border-radius: 10px;
+            padding: 12px;
+            margin-right: 6px;
+            min-width: 60px;
         }
         .icon-btn:active { background: #444; transform: scale(0.95); }
-        .icon-emoji { font-size: 24px; }
-        .icon-text { font-size: 10px; margin-top: 4px; color: #bbb; }
+        .icon-emoji { font-size: 28px; }
+        .icon-text { font-size: 11px; margin-top: 5px; color: #bbb; }
     </style>
 </head>
 <body>
 
-    <div class="controls">
-        <select id="voiceSelect"><option value="">Loading voices...</option></select>
+    <div class="header">
+        <span style="font-weight: bold; color: #007bff;">UK FEMALE VOICE</span>
         <button class="btn-clear" onclick="clearText()">CLEAR</button>
     </div>
 
-    <textarea id="editor" placeholder="Type or tap icons..."></textarea>
+    <textarea id="editor" placeholder="Type here..."></textarea>
 
     <div class="banner-container">
         <div class="category-group">
@@ -92,51 +75,55 @@ HTML
             <div class="icon-btn" onclick="speakText('Happy')"><span class="icon-emoji">😊</span><span class="icon-text">Happy</span></div>
             <div class="icon-btn" onclick="speakText('Sad')"><span class="icon-emoji">😢</span><span class="icon-text">Sad</span></div>
             <div class="icon-btn" onclick="speakText('Angry')"><span class="icon-emoji">😠</span><span class="icon-text">Angry</span></div>
+            <div class="icon-btn" onclick="speakText('Scared')"><span class="icon-emoji">😨</span><span class="icon-text">Scared</span></div>
+            <div class="icon-btn" onclick="speakText('Tired')"><span class="icon-emoji">😴</span><span class="icon-text">Tired</span></div>
         </div>
 
         <div class="category-group">
             <span class="category-label">School</span>
             <div class="icon-btn" onclick="speakText('Book')"><span class="icon-emoji">📖</span><span class="icon-text">Book</span></div>
             <div class="icon-btn" onclick="speakText('Pencil')"><span class="icon-emoji">✏️</span><span class="icon-text">Pencil</span></div>
-            <div class="icon-btn" onclick="speakText('School Bag')"><span class="icon-emoji">🎒</span><span class="icon-text">Bag</span></div>
+            <div class="icon-btn" onclick="speakText('Paper')"><span class="icon-emoji">📄</span><span class="icon-text">Paper</span></div>
+            <div class="icon-btn" onclick="speakText('Computer')"><span class="icon-emoji">💻</span><span class="icon-text">Computer</span></div>
+            <div class="icon-btn" onclick="speakText('Backpack')"><span class="icon-emoji">🎒</span><span class="icon-text">Bag</span></div>
+            <div class="icon-btn" onclick="speakText('Scissors')"><span class="icon-emoji">✂️</span><span class="icon-text">Scissors</span></div>
         </div>
 
         <div class="category-group">
             <span class="category-label">Clothing</span>
             <div class="icon-btn" onclick="speakText('Shirt')"><span class="icon-emoji">👕</span><span class="icon-text">Shirt</span></div>
+            <div class="icon-btn" onclick="speakText('Trousers')"><span class="icon-emoji">👖</span><span class="icon-text">Trousers</span></div>
+            <div class="icon-btn" onclick="speakText('Jumper')"><span class="icon-emoji">🧶</span><span class="icon-text">Jumper</span></div>
+            <div class="icon-btn" onclick="speakText('Coat')"><span class="icon-emoji">🧥</span><span class="icon-text">Coat</span></div>
             <div class="icon-btn" onclick="speakText('Shoes')"><span class="icon-emoji">👟</span><span class="icon-text">Shoes</span></div>
-            <div class="icon-btn" onclick="speakText('Hat')"><span class="icon-emoji">🧢</span><span class="icon-text">Hat</span></div>
+            <div class="icon-btn" onclick="speakText('Socks')"><span class="icon-emoji">🧦</span><span class="icon-text">Socks</span></div>
         </div>
 
         <div class="category-group">
-            <span class="category-label">Food</span>
+            <span class="category-label">Food & Drink</span>
             <div class="icon-btn" onclick="speakText('Apple')"><span class="icon-emoji">🍎</span><span class="icon-text">Apple</span></div>
+            <div class="icon-btn" onclick="speakText('Banana')"><span class="icon-emoji">🍌</span><span class="icon-text">Banana</span></div>
             <div class="icon-btn" onclick="speakText('Bread')"><span class="icon-emoji">🍞</span><span class="icon-text">Bread</span></div>
+            <div class="icon-btn" onclick="speakText('Milk')"><span class="icon-emoji">🥛</span><span class="icon-text">Milk</span></div>
             <div class="icon-btn" onclick="speakText('Water')"><span class="icon-emoji">💧</span><span class="icon-text">Water</span></div>
+            <div class="icon-btn" onclick="speakText('Pizza')"><span class="icon-emoji">🍕</span><span class="icon-text">Pizza</span></div>
+            <div class="icon-btn" onclick="speakText('Cookie')"><span class="icon-emoji">🍪</span><span class="icon-text">Cookie</span></div>
         </div>
     </div>
 
     <script>
         const editor = document.getElementById('editor');
-        const voiceSelect = document.getElementById('voiceSelect');
         const synth = window.speechSynthesis;
-        let voices = [];
+        let ukVoice = null;
 
-        function populateVoiceList() {
-            voices = synth.getVoices();
-            voiceSelect.innerHTML = '';
-            voices.forEach((voice, i) => {
-                const option = document.createElement('option');
-                option.textContent = `${voice.name} (${voice.lang})`;
-                option.value = i;
-                if (voice.lang === 'en-GB' && voice.name.toLowerCase().includes('female')) option.selected = true;
-                voiceSelect.appendChild(option);
-            });
+        function findUKVoice() {
+            const voices = synth.getVoices();
+            ukVoice = voices.find(v => v.lang === 'en-GB' && v.name.toLowerCase().includes('female')) || 
+                      voices.find(v => v.lang === 'en-GB');
         }
 
-        if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = populateVoiceList;
+        if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = findUKVoice;
 
-        // Typist logic
         editor.addEventListener('input', (e) => {
             const val = e.target.value;
             if (val.length === 0) return;
@@ -157,8 +144,10 @@ HTML
         function speakText(text) {
             synth.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            const selectedIndex = voiceSelect.value;
-            if (selectedIndex !== "") utterance.voice = voices[selectedIndex];
+            if (!ukVoice) findUKVoice();
+            if (ukVoice) utterance.voice = ukVoice;
+            
+            utterance.lang = 'en-GB';
             utterance.pitch = 1.3; 
             utterance.rate = 1.0;
             synth.speak(utterance);
@@ -168,7 +157,7 @@ HTML
             if (confirm("Clear all text?")) { editor.value = ''; editor.focus(); }
         }
 
-        populateVoiceList();
+        findUKVoice();
     </script>
 </body>
 </html>
